@@ -1,9 +1,8 @@
-import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Typography } from '@mui/material';
 
-function App() {
+export const App: React.FunctionComponent = () => {
   return (
     <div className="App">
       <header className="App-header">

@@ -1,26 +1,10 @@
-import logo from './logo.svg';
-import './App.css';
-import { Typography } from '@mui/material';
+import MainLayout from "./layout/MainLayout";
 
 export const App: React.FunctionComponent = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Typography>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </Typography>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MainLayout />
   );
-}
+};
 
 export default App;

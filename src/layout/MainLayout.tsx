@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { MainAppBar } from "./../components/Main/AppBar/AppBar";
 import { Main } from "./../components/Main/Main";
 import { MainToolbar } from "./../components/Main/Toolbar/Toolbar";
@@ -21,6 +22,8 @@ const DRAWER_WIDTH = 240;
 
 export const MainLayout: React.FunctionComponent = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
+
+  const navigate = useNavigate();
 
   const onDrawerOpen = () => {
     setOpenDrawer(true);
@@ -35,14 +38,14 @@ export const MainLayout: React.FunctionComponent = () => {
       icon: <Public />,
       label: "Countries",
       onClick: () => {
-        console.log("Countries!");
+        navigate(`/countries`)
       },
     },
     {
       icon: <Language />,
       label: "Languages",
       onClick: () => {
-        console.log("Languages!");
+        navigate(`/languages`)
       },
     },
   ];
@@ -50,7 +53,11 @@ export const MainLayout: React.FunctionComponent = () => {
   return (
     <Box>
       {/* Source : MUI Drawers -> Persistent Drawer */}
-      <MainAppBar position="sticky" drawerWidth={DRAWER_WIDTH} open={openDrawer}>
+      <MainAppBar
+        position="sticky"
+        drawerWidth={DRAWER_WIDTH}
+        open={openDrawer}
+      >
         <MainToolbar show={openDrawer} onOpen={onDrawerOpen} />
       </MainAppBar>
       <Drawer
@@ -92,7 +99,12 @@ export const MainLayout: React.FunctionComponent = () => {
         </List>
       </Drawer>
 
-      <Main variant="elevation" elevation={0} drawerWidth={DRAWER_WIDTH} open={openDrawer}>
+      <Main
+        variant="elevation"
+        elevation={0}
+        drawerWidth={DRAWER_WIDTH}
+        open={openDrawer}
+      >
         <Typography paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus

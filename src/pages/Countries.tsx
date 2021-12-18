@@ -1,11 +1,14 @@
 import {
+  Grid,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import { useCountries } from "../hooks/useCountries";
 import { CountryType } from "../interfaces/Country";
@@ -47,13 +50,33 @@ export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
       align: "right",
       format: (value) => {
         const population = parseFloat(value as string);
-        return population.toLocaleString(undefined, {
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        });
+        return oneDecimalFormat(population);
       },
     },
   ];
+
+  const oneDecimalFormat = (value: number) => {
+    return value.toLocaleString(undefined, {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    });
+  };
+
+  const populationAverageReducer = (
+    accumultator: number,
+    current: CountryType
+  ) => accumultator + current.population;
+  const populationAverage =
+    (countryList &&
+      oneDecimalFormat(
+        countryList.reduce(populationAverageReducer, 0) / countryList.length
+      )) ??
+    "-";
+
+  const countriesArea: Array<number> =
+    countryList?.map((country) => country.area || 0) || [];
+  const smallestArea = Math.min(0, ...countriesArea).toLocaleString();
+  const biggestArea = Math.max(0, ...countriesArea).toLocaleString();
 
   return (
     <MainLayout>
@@ -71,10 +94,7 @@ export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
           </TableHead>
           <TableBody>
             {countryList?.map((country) => (
-              <TableRow
-                key={country.alpha3Code}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
+              <TableRow key={country.alpha3Code}>
                 {columns.map((column) => (
                   <TableCell
                     key={`${country.alpha3Code}-${column.field}`}
@@ -88,6 +108,32 @@ export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
               </TableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell rowSpan={columns.length}>
+                <Grid container direction="column">
+                  <Grid item>
+                    <Typography variant="subtitle2">
+                      Population average from all the countries :&nbsp;
+                      {populationAverage}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="subtitle2">
+                      Countries with smallest area :&nbsp;
+                      {smallestArea}
+                    </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="subtitle2">
+                      Countries with biggest area :&nbsp;
+                      {biggestArea}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
     </MainLayout>

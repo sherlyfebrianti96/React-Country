@@ -12,8 +12,9 @@ export const Main: React.FunctionComponent<MainProps> = styled(Paper, {
   shouldForwardProp: (prop: string) =>
     prop !== "open" && prop !== "drawerWidth",
 })(({ theme, open, drawerWidth }) => ({
-  paddingLeft: theme.spacing(1),
-  paddingRight: theme.spacing(1),
+  paddingLeft: theme.spacing(2),
+  paddingRight: theme.spacing(2),
+  paddingBottom: theme.spacing(5),
   flexGrow: 1,
   transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,

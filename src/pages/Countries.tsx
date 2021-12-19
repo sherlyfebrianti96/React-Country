@@ -1,5 +1,4 @@
 import {
-  CircularProgress,
   Grid,
   Paper,
   Skeleton,
@@ -178,8 +177,8 @@ export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
                       align={column.align}
                     >
                       {(column.format &&
-                        column.format(country[column.field])) ??
-                        country[column.field] ??
+                        column.format(country[column.field as keyof CountryType])) ??
+                        country[column.field as keyof CountryType] ??
                         "-"}
                     </TableCell>
                   ))}

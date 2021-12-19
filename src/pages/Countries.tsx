@@ -65,17 +65,14 @@ export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
     {
       field: "name",
       headerName: "Name",
-      sortable: true,
     },
     {
       field: "region",
       headerName: "Region",
-      sortable: true,
     },
     {
       field: "area",
       headerName: "Area",
-      sortable: true,
       align: "right",
       format: (value) => {
         const fixedArea = parseInt(value as string);
@@ -85,7 +82,6 @@ export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
     {
       field: "population",
       headerName: "Population",
-      sortable: true,
       align: "right",
       format: (value) => {
         const population = parseFloat(value as string);

@@ -3,7 +3,6 @@ import { CountryType } from "./Country";
 export interface TableColumnType {
   field: keyof CountryType;
   headerName: string;
-  sortable: boolean;
   align?: "right" | "inherit" | "left" | "center" | "justify";
   format?: (
     value:

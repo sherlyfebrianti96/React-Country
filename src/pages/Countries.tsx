@@ -1,6 +1,8 @@
 import {
+  CircularProgress,
   Grid,
   Paper,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -25,11 +27,14 @@ export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
   ...props
 }) => {
   const [sorting, setSorting] = useState<SortingType>({
-    by: 'name',
+    by: "name",
     direction: SortingDirection.ASC,
   });
 
-  const countryList: Array<CountryType> = useCountries();
+  const {
+    data: countryList,
+    isLoading: isLoadingCountries,
+  }: { data: Array<CountryType>; isLoading: boolean } = useCountries();
 
   const onSortColumn = (evt: React.MouseEvent<HTMLDivElement>) => {
     const newSorting: SortingType = { ...sorting };
@@ -122,15 +127,19 @@ export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
     };
 
     return countryList?.sort(comparator);
-  }
+  };
 
-  const comparatorByType = (data1: CountryType, data2: CountryType, column: keyof CountryType) => {
+  const comparatorByType = (
+    data1: CountryType,
+    data2: CountryType,
+    column: keyof CountryType
+  ) => {
     switch (typeof data1[column]) {
-      case 'string':
+      case "string":
         return data1[column].toString().localeCompare(data2[column].toString());
-    
+
       default:
-        return (data1[column] as number) - (data2[column]  as number);
+        return (data1[column] as number) - (data2[column] as number);
     }
   };
 
@@ -156,20 +165,31 @@ export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortData(countryList)?.map((country) => (
-              <TableRow key={country.alpha3Code}>
+            {isLoadingCountries ? (
+              <TableRow key="skeleton-row">
                 {columns.map((column) => (
-                  <TableCell
-                    key={`${country.alpha3Code}-${column.field}`}
-                    align={column.align}
-                  >
-                    {(column.format && column.format(country[column.field])) ??
-                      country[column.field] ??
-                      "-"}
+                  <TableCell key={`skeleton-row-${column.field}`}>
+                    <Skeleton variant="rectangular" />
                   </TableCell>
                 ))}
               </TableRow>
-            ))}
+            ) : (
+              sortData(countryList)?.map((country) => (
+                <TableRow key={country.alpha3Code}>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={`${country.alpha3Code}-${column.field}`}
+                      align={column.align}
+                    >
+                      {(column.format &&
+                        column.format(country[column.field])) ??
+                        country[column.field] ??
+                        "-"}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            )}
           </TableBody>
           <TableFooter>
             <TableRow>

@@ -192,7 +192,7 @@ export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell rowSpan={columns.length}>
+              <TableCell colSpan={columns.length}>
                 <Grid container direction="column">
                   <Grid item>
                     <Typography variant="subtitle2">

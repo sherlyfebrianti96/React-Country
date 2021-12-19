@@ -15,7 +15,10 @@ export const App: React.FunctionComponent = () => {
           <Routes>
             <Route path="/countries" element={<CountriesPage />} />
             <Route path="/languages" element={<LanguagesPage />} />
+            {/* Default Page */}
             <Route path="/" element={<Navigate to="/countries" />} />
+            {/* 404 Page */}
+            <Route path="*" element={<Navigate to="/countries" />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

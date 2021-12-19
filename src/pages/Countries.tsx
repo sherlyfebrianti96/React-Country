@@ -153,7 +153,9 @@ export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
                     direction={sorting?.direction || SortingDirection.ASC}
                     onClick={onSortColumn}
                   >
-                    {column.headerName}
+                    <Typography>
+                      <strong>{column.headerName}</strong>
+                    </Typography>
                   </TableSortLabel>
                 </TableCell>
               ))}
@@ -177,7 +179,9 @@ export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
                       align={column.align}
                     >
                       {(column.format &&
-                        column.format(country[column.field as keyof CountryType])) ??
+                        column.format(
+                          country[column.field as keyof CountryType]
+                        )) ??
                         country[column.field as keyof CountryType] ??
                         "-"}
                     </TableCell>

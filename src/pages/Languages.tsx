@@ -6,6 +6,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import { useCountries } from "../hooks/useCountries";
 import { CountryType } from "../interfaces/Country";
@@ -57,7 +58,7 @@ export const LanguagesPage: React.FunctionComponent<LanguagesPageProps> = ({
     },
     {
       field: "population",
-      headerName: "population",
+      headerName: "Population",
       align: "right",
       format: (value) => {
         return value.toLocaleString();
@@ -73,8 +74,10 @@ export const LanguagesPage: React.FunctionComponent<LanguagesPageProps> = ({
           <TableHead>
             <TableRow key="countriesHeader">
               {columns.map((column) => (
-                <TableCell key={column.field} /*align={column.align}*/>
-                  {column.headerName}
+                <TableCell key={column.field} align={column.align}>
+                  <Typography>
+                      <strong>{column.headerName}</strong>
+                  </Typography>
                 </TableCell>
               ))}
             </TableRow>

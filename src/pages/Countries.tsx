@@ -8,10 +8,14 @@ import {
   TableFooter,
   TableHead,
   TableRow,
+  TableSortLabel,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
+import { SortingDirection } from "../enum/SortingDirection";
 import { useCountries } from "../hooks/useCountries";
 import { CountryType } from "../interfaces/Country";
+import { SortingType } from "../interfaces/Sorting";
 import { TableColumnType } from "../interfaces/TableColumn";
 import MainLayout from "../layout/MainLayout";
 
@@ -20,7 +24,37 @@ export interface CountriesPageProps {}
 export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
   ...props
 }) => {
+  const [sorting, setSorting] = useState<SortingType>({
+    by: 'name',
+    direction: SortingDirection.ASC,
+  });
+
   const countryList: Array<CountryType> = useCountries();
+
+  const onSortColumn = (evt: React.MouseEvent<HTMLDivElement>) => {
+    const newSorting: SortingType = { ...sorting };
+
+    const column = evt.currentTarget.getAttribute("data-column");
+
+    if (column === sorting?.by) {
+      /* Change the Sorting Direction */
+      newSorting.direction = switchSorting(sorting.direction);
+    } else {
+      /* Change the Sorting Column */
+      newSorting.by = column as keyof CountryType;
+      newSorting.direction = SortingDirection.ASC;
+    }
+
+    setSorting(newSorting);
+  };
+
+  const switchSorting = (direction: SortingDirection) => {
+    if (direction === SortingDirection.ASC) {
+      return SortingDirection.DESC;
+    }
+
+    return SortingDirection.ASC;
+  };
 
   const columns: Array<TableColumnType> = [
     {
@@ -78,6 +112,28 @@ export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
   const smallestArea = Math.min(0, ...countriesArea).toLocaleString();
   const biggestArea = Math.max(0, ...countriesArea).toLocaleString();
 
+  const sortData = (countryList: Array<CountryType>) => {
+    const comparator = (a: CountryType, b: CountryType) => {
+      if (sorting.direction === SortingDirection.ASC) {
+        return comparatorByType(a, b, sorting.by);
+      } else {
+        return comparatorByType(b, a, sorting.by);
+      }
+    };
+
+    return countryList?.sort(comparator);
+  }
+
+  const comparatorByType = (data1: CountryType, data2: CountryType, column: keyof CountryType) => {
+    switch (typeof data1[column]) {
+      case 'string':
+        return data1[column].toString().localeCompare(data2[column].toString());
+    
+      default:
+        return (data1[column] as number) - (data2[column]  as number);
+    }
+  };
+
   return (
     <MainLayout>
       <h1>Countries</h1>
@@ -87,13 +143,20 @@ export const CountriesPage: React.FunctionComponent<CountriesPageProps> = ({
             <TableRow key="countriesHeader">
               {columns.map((column) => (
                 <TableCell key={column.field} align={column.align}>
-                  {column.headerName}
+                  <TableSortLabel
+                    data-column={column.field}
+                    active={sorting?.by === column.field}
+                    direction={sorting?.direction || SortingDirection.ASC}
+                    onClick={onSortColumn}
+                  >
+                    {column.headerName}
+                  </TableSortLabel>
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {countryList?.map((country) => (
+            {sortData(countryList)?.map((country) => (
               <TableRow key={country.alpha3Code}>
                 {columns.map((column) => (
                   <TableCell

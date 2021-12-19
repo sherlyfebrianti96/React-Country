@@ -1,7 +1,8 @@
 import { CountryType } from "./Country";
+import { LanguageType } from "./Language";
 
 export interface TableColumnType {
-  field: keyof CountryType;
+  field: keyof CountryType | keyof LanguageType;
   headerName: string;
   align?: "right" | "inherit" | "left" | "center" | "justify";
   format?: (

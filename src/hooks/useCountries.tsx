@@ -10,6 +10,5 @@ export const useCountries = () => {
     return res.json();
   });
 
-  console.log("data : ", data);
   return { data: data as Array<CountryType>, isLoading };
 };

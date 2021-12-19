@@ -1,8 +1,7 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { Route, BrowserRouter, Routes } from "react-router-dom";
+import { Route, BrowserRouter, Routes, Navigate } from "react-router-dom";
 import CountriesPage from "./pages/Countries";
-import Dashboard from "./pages/Dashboard";
 import LanguagesPage from "./pages/Languages";
 
 export const App: React.FunctionComponent = () => {
@@ -16,7 +15,7 @@ export const App: React.FunctionComponent = () => {
           <Routes>
             <Route path="/countries" element={<CountriesPage />} />
             <Route path="/languages" element={<LanguagesPage />} />
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<Navigate to="/countries" />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
